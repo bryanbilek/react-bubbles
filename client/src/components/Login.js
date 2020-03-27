@@ -12,7 +12,7 @@ const Login = () => {
     password: ""
   });
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit } = useForm();
   const history  = useHistory();
 
   const handleChanges = e => {

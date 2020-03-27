@@ -40,7 +40,7 @@ A web server can be a computer that stores the code for a website or also a prog
 
 - [ ] Which HTTP methods can be mapped to the CRUD acronym that we use when interfacing with APIs/Servers.
 
-We can use the PUT & DELETE methods to update or destroy data that we take in from APIs or Servers.
+We can use the POST method to Create data, GET method to Read data, PUT method to update data, & DELETE method to destroy data that we take in from APIs or Servers.
 
 
 ## Project Set Up

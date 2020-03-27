@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { useHistory, useParams } from "react-router-dom";
 
 const initialColor = {
   color: "",
@@ -8,8 +9,20 @@ const initialColor = {
 
 const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
+
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+
+  const history = useHistory();
+  const { id } = useParams();
+
+  // useEffect(() => {
+  //   const updateColor = colors.find(color => color.id === Number(id))
+  //   console.log("%%%UPDATE%%%", updateColor);
+  //   if (updateColor) {
+  //     setColorToEdit(updateColor)
+  //   }
+  // }, [colors, id]);
 
   const editColor = color => {
     setEditing(true);
@@ -21,11 +34,39 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
-  };
+    axiosWithAuth().put(`/api/colors/${colorToEdit.id}`, colorToEdit)
+    //maybe initialColor?
+     .then(res => {
+       console.log('@@@PUT@@@', res)
+       setColorToEdit(initialColor);
+       updateColors(colors.map(color => {
+        
+           if(color.id === res.data.id) {
+            return res.data
+           } else {
+             return color;
+           }
+       }))
+       setEditing(false);
+      //  history.push("/protected");
+     })
+     .catch(err => console.log("put error", err))
+ };
 
   const deleteColor = color => {
     // make a delete request to delete this color
-  };
+    axiosWithAuth().delete(`/api/colors/${color.id}`)
+    .then(res => {
+      console.log('###DELETE###', res)
+      setColorToEdit(initialColor);
+      setEditing(false);
+      updateColors(colors.filter(color => {
+        return (color.id !== res.data)
+      }
+        ))
+    })
+    .catch(err => console.log(err));
+};
 
   return (
     <div className="colors-wrap">
