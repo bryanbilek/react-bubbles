@@ -13,7 +13,7 @@ const Login = () => {
   });
 
   const { register, handleSubmit, reset } = useForm();
-  const { history } = useHistory();
+  const history  = useHistory();
 
   const handleChanges = e => {
     setUser({...user, [e.target.name]: e.target.value });
